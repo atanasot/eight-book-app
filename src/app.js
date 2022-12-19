@@ -10,6 +10,7 @@ const main = async () => {
     // make a call to Google Books API
     const query = await getQuery();
     const books = await bookAPI.getBooks(query);
+    console.log(books)
   } else if (action === "view") {
     // print a list of all saved books
   }
