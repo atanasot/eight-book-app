@@ -10,7 +10,8 @@ const main = async () => {
     // make a call to Google Books API
     const query = await getQuery();
     const books = await bookAPI.getBooks(query);
-    console.log(books)
+    const newBookIndex = await selectBook(books);
+    console.log(newBookIndex);
   } else if (action === "view") {
     // print a list of all saved books
   }
@@ -42,5 +43,23 @@ async function getQuery() {
   ]);
   return answer.query;
 }
+
+// format books for selection by inquirer
+const selectBook = async (books) => {
+  const choices = books.reduce((acc, book, idx) => {
+    acc.push({ value: idx, name: bookAPI.printBook(book) });
+    return acc;
+  }, []);
+
+  const answer = await inquirer.prompt([
+    {
+      type: "list",
+      name: "bookSelection",
+      message: "Here are your books! Choose one to add to reading list:",
+      choices,
+    },
+  ]);
+  return answer.bookSelection;
+};
 
 main();

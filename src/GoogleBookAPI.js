@@ -29,6 +29,12 @@ class GoogleBookAPI {
       return acc;
     }, []);
   }
+
+  printBook(book) {
+    return `"${book.title}" by ${book.authors.join(", ")}, published by ${
+      book.publisher
+    }`;
+  }
 }
 
 module.exports = GoogleBookAPI;
