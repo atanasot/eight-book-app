@@ -1,4 +1,5 @@
 const axios = require("axios");
+const Book = require("./Book");
 
 class GoogleBookAPI {
   async getBooks(query) {
@@ -16,24 +17,16 @@ class GoogleBookAPI {
 
   parseBooks(data) {
     return data.items.reduce((acc, item) => {
-      acc.push({
-        id: item.id,
-        title: item.volumeInfo.title ? item.volumeInfo.title : "title uknown",
-        authors: item.volumeInfo.authors
-          ? item.volumeInfo.authors
-          : ["authose uknown"],
-        publisher: item.volumeInfo.publisher
-          ? item.volumeInfo.publisher
-          : "publisher uknown",
-      });
+      acc.push(
+        new Book(
+          item.id,
+          item.volumeInfo.title,
+          item.volumeInfo.authors,
+          item.volumeInfo.publisher
+        )
+      );
       return acc;
     }, []);
-  }
-
-  printBook(book) {
-    return `"${book.title}" by ${book.authors.join(", ")}, published by ${
-      book.publisher
-    }`;
   }
 }
 

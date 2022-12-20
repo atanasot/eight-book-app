@@ -52,7 +52,7 @@ async function getQuery() {
 // format books for selection by inquirer
 const selectBook = async (books) => {
   const choices = books.reduce((acc, book, idx) => {
-    acc.push({ value: idx, name: bookAPI.printBook(book) });
+    acc.push({ value: idx, name: book.print() });
     return acc;
   }, []);
 

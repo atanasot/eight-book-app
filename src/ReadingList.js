@@ -1,4 +1,5 @@
 const { readFileSync, writeFileSync } = require("fs");
+const Book = require("./Book");
 
 class ReadingList {
   constructor(filelocation = "myBooks.json") {
@@ -10,10 +11,15 @@ class ReadingList {
   openReadingList() {
     try {
       const data = readFileSync(this.fileLocation, "utf8");
-      this.readingList = JSON.parse(data);
+
+      this.readingList = JSON.parse(data).reduce((acc, book) => {
+        acc.push(new Book(book.id, book.title, book.authors, book.publisher));
+        return acc;
+      }, []);
     } catch (error) {
       if (error.code === "ENOENT") {
         this.readingList = [];
+        return;
       }
       console.log(error);
       return;
@@ -48,13 +54,8 @@ class ReadingList {
   printReadingList() {
     return this.readingList.reduce((acc, book, idx) => {
       if (idx !== this.readingList.length - 1) {
-        acc += `"${book.title}" by ${book.authors.join(", ")}, published by ${
-          book.publisher
-        }\n`;
-      } else
-        acc += `"${book.title}" by ${book.authors.join(", ")}, published by ${
-          book.publisher
-        }`;
+        acc += `"${book.print()}"\n`;
+      } else acc += `"${book.print()}"`;
       return acc;
     }, "");
   }

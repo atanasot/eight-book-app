@@ -1,8 +1,10 @@
 const expect = require("chai").expect;
 const ReadingList = require("../src/ReadingList");
+const Book = require("../src/Book");
 const { unlinkSync } = require("fs");
 
 describe("ReadingList class", () => {
+  const testBook = new Book(1, "My Book", "Lina R.", "Publishing House");
   describe("constructor", () => {
     it("starts with an empty array", () => {
       const testReadingList = new ReadingList(
@@ -17,14 +19,8 @@ describe("ReadingList class", () => {
       const testReadingList = new ReadingList(
         (filelocation = "test-readinglist.json")
       );
-      const book = {
-        id: 1,
-        title: "My Book",
-        author: "Lina R.",
-        publisher: "Publishing House",
-      };
-      testReadingList.addBook(book);
-      expect(testReadingList.readingList).to.be.deep.equal([book]);
+      testReadingList.addBook(testBook);
+      expect(testReadingList.readingList).to.be.deep.equal([testBook]);
     });
   });
 
@@ -33,20 +29,14 @@ describe("ReadingList class", () => {
       const testReadingList = new ReadingList(
         (filelocation = "test-readinglist.json")
       );
-      const book = {
-        id: 1,
-        title: "My Book",
-        author: "Lina R.",
-        publisher: "Publishing House",
-      };
-      testReadingList.addBook(book);
-      testReadingList.saveReadingList(book);
+      testReadingList.addBook(testBook);
+      testReadingList.saveReadingList(testBook);
 
       const newReadingList = new ReadingList(
         (fileLocation = "test-readinglist.json")
       );
       newReadingList.openReadingList();
-      expect(newReadingList.readingList).to.be.deep.equal([book]);
+      expect(newReadingList.readingList).to.be.deep.equal([testBook]);
       unlinkSync("test-readinglist.json"); // delete the file
     });
   });
