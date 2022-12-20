@@ -1,9 +1,9 @@
 class Book {
   constructor(id, title = "", authors = "", publisher = "") {
     this.id = id;
-    this.title = title ? title : "title uknown";
-    this.authors = authors ? authors : "authors uknown";
-    this.publisher = publisher ? publisher : "publisher uknown";
+    this.title = title ? title : "title unknown";
+    this.authors = authors ? authors : "authors unknown";
+    this.publisher = publisher ? publisher : "publisher unknown";
   }
 
   print() {

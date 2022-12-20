@@ -1,6 +1,6 @@
-const inquirer = require("inquirer");
 const GoogleBookAPI = require("./GoogleBookAPI");
 const ReadingList = require("./ReadingList");
+const { getAction, getQuery, selectBook } = require("./prompts");
 
 const bookAPI = new GoogleBookAPI();
 const readingList = new ReadingList();
@@ -20,51 +20,6 @@ const main = async () => {
     readingList.openReadingList();
     console.log(readingList.printReadingList());
   }
-};
-
-// This function lets the user select an option
-const getAction = async () => {
-  const answer = await inquirer.prompt([
-    {
-      type: "list",
-      name: "action",
-      message: "What would you like to do?",
-      choices: [
-        { value: "search", name: "Search Google Books" },
-        { value: "view", name: "View saved reading list" },
-      ],
-    },
-  ]);
-  return answer.action;
-};
-
-async function getQuery() {
-  const answer = await inquirer.prompt([
-    {
-      type: "input",
-      name: "query",
-      message: "Please enter your Google Book query:",
-    },
-  ]);
-  return answer.query;
-}
-
-// format books for selection by inquirer
-const selectBook = async (books) => {
-  const choices = books.reduce((acc, book, idx) => {
-    acc.push({ value: idx, name: book.print() });
-    return acc;
-  }, []);
-
-  const answer = await inquirer.prompt([
-    {
-      type: "list",
-      name: "bookSelection",
-      message: "Here are your books! Choose one to add to reading list:",
-      choices,
-    },
-  ]);
-  return answer.bookSelection;
 };
 
 main();

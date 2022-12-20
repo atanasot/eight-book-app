@@ -5,6 +5,7 @@ const { unlinkSync } = require("fs");
 
 describe("ReadingList class", () => {
   const testBook = new Book(1, "My Book", "Lina R.", "Publishing House");
+
   describe("constructor", () => {
     it("starts with an empty array", () => {
       const testReadingList = new ReadingList(
@@ -38,6 +39,22 @@ describe("ReadingList class", () => {
       newReadingList.openReadingList();
       expect(newReadingList.readingList).to.be.deep.equal([testBook]);
       unlinkSync("test-readinglist.json"); // delete the file
+    });
+  });
+
+  describe("printReadingList", () => {
+    const testReadingList = new ReadingList(
+      (filelocation = "test-readinglist.json")
+    );
+
+    it("is a method on the ReadingList class", () => {
+      expect(
+        typeof testReadingList.printReadingList === "function"
+      ).to.be.equal(true);
+    });
+    it("prints the readingList as a string", () => {
+      const output = testReadingList.printReadingList();
+      expect(typeof output === "string").to.be.equal(true);
     });
   });
 });
