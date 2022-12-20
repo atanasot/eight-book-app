@@ -1,10 +1,6 @@
 const expect = require("chai").expect;
 const Book = require("../src/Book");
 
-// test the undefined fields
-// test print()
-// test readinglist print in TestReadingList
-
 describe("Book class", () => {
   const testBook = new Book(1, "My Book", ["Lina R."], "Publishing House");
   describe("constructor", () => {
@@ -36,7 +32,7 @@ describe("Book class", () => {
   );
   describe("tesBookNoAuthors.authors", () => {
     it("if the authors are unknown, they get assigned a string value", () => {
-      expect(testBookNoAuthors.authors).to.equal("authors unknown");
+      expect(testBookNoAuthors.authors).to.deep.equal(["authors unknown"]);
     });
   });
 

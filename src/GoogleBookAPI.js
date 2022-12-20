@@ -9,6 +9,9 @@ class GoogleBookAPI {
           `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=5`
         )
       ).data;
+      if (!data.totalItems) {
+        return []
+      }
       return this.parseBooks(data);
     } catch (err) {
       console.log(err);

@@ -17,14 +17,19 @@ const getAction = async () => {
 };
 
 async function getQuery() {
-  const answer = await inquirer.prompt([
-    {
-      type: "input",
-      name: "query",
-      message: "Please enter your Google Book query:",
-    },
-  ]);
-  return answer.query;
+  let answer = "";
+  while (!answer.length) {
+    const response = await inquirer.prompt([
+      {
+        type: "input",
+        name: "query",
+        message: "Please enter your Google Book query:",
+      },
+    ]);
+    answer = response.query;
+    if (!answer.length) console.log("Please provide a query");
+  }
+  return answer;
 }
 
 // format books for selection by inquirer

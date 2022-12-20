@@ -12,6 +12,10 @@ const main = async () => {
     // make a call to Google Books API
     const query = await getQuery();
     const books = await bookAPI.getBooks(query);
+    if (!books.length) {
+      console.log("No books found, please try again with a different query");
+      return;
+    }
     const newBookIndex = await selectBook(books);
     readingList.openReadingList();
     if (readingList.addBook(books[newBookIndex])) readingList.saveReadingList();

@@ -54,8 +54,8 @@ class ReadingList {
   printReadingList() {
     return this.readingList.reduce((acc, book, idx) => {
       if (idx !== this.readingList.length - 1) {
-        acc += `"${book.print()}"\n`;
-      } else acc += `"${book.print()}"`;
+        acc += `${book.print()}\n`;
+      } else acc += `${book.print()}`;
       return acc;
     }, "");
   }
