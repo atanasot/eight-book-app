@@ -27,10 +27,10 @@ class ReadingList {
       }
     }
     this.readingList.push(newBook);
-    return true
+    return true;
   }
 
-// persists list to the disc
+  // persists list to the disc
   saveReadingList() {
     try {
       writeFileSync(
@@ -43,6 +43,20 @@ class ReadingList {
       return;
     }
     console.log("Reading list saved!");
+  }
+
+  printReadingList() {
+    return this.readingList.reduce((acc, book, idx) => {
+      if (idx !== this.readingList.length - 1) {
+        acc += `"${book.title}" by ${book.authors.join(", ")}, published by ${
+          book.publisher
+        }\n`;
+      } else
+        acc += `"${book.title}" by ${book.authors.join(", ")}, published by ${
+          book.publisher
+        }`;
+      return acc;
+    }, "");
   }
 }
 

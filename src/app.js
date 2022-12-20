@@ -17,6 +17,8 @@ const main = async () => {
     if (readingList.addBook(books[newBookIndex])) readingList.saveReadingList();
   } else if (action === "view") {
     // print a list of all saved books
+    readingList.openReadingList();
+    console.log(readingList.printReadingList());
   }
 };
 
