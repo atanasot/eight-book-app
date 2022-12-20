@@ -1,9 +1,9 @@
 const inquirer = require("inquirer");
 const GoogleBookAPI = require("./GoogleBookAPI");
-const ReadingList = require('./ReadingList')
+const ReadingList = require("./ReadingList");
 
 const bookAPI = new GoogleBookAPI();
-const readingList = new ReadingList()
+const readingList = new ReadingList();
 
 const main = async () => {
   console.log("Welcome to the BookSearchApp!");
@@ -13,8 +13,8 @@ const main = async () => {
     const query = await getQuery();
     const books = await bookAPI.getBooks(query);
     const newBookIndex = await selectBook(books);
-    readingList.addBook(books[newBookIndex])
-    console.log(readingList);
+    readingList.openReadingList();
+    if (readingList.addBook(books[newBookIndex])) readingList.saveReadingList();
   } else if (action === "view") {
     // print a list of all saved books
   }
