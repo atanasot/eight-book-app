@@ -1,6 +1,6 @@
 const GoogleBookAPI = require("./GoogleBookAPI");
 const ReadingList = require("./ReadingList");
-const { getAction, getQuery, selectBook } = require("./prompts");
+const { getAction, getQuery, selectBookOrBooks } = require("./prompts");
 
 const bookAPI = new GoogleBookAPI();
 const readingList = new ReadingList();
@@ -17,10 +17,14 @@ const main = async () => {
         console.log("No books found, please try again with a different query.");
         continue;
       }
-      const newBookIndex = await selectBook(books);
+      // change to book indices
+      const newBookIndices = await selectBookOrBooks(books);
       readingList.openReadingList();
-      if (readingList.addBook(books[newBookIndex]))
-        readingList.saveReadingList();
+      let bookAdded = false;
+      for (idx of newBookIndices) {
+        if (readingList.addBook(books[idx - 1])) bookAdded = true;
+      }
+      if (bookAdded) readingList.saveReadingList();
     } else if (action == 2) {
       //print a list of all saved books
       readingList.openReadingList();

@@ -46,29 +46,44 @@ async function getQuery() {
   return answer;
 }
 
-const selectBook = async (books) => {
+const selectBookOrBooks = async (books) => {
   const choices = books.reduce((acc, book, idx) => {
     acc.push({ value: idx, name: book.print() });
     return acc;
   }, []);
 
   choices.map((choice) => console.log(`${choice.value + 1}) ${choice.name}`));
-  let answer = await readLineAsync(
-    "Here are your books! Choose one to add to reading list: "
+  console.log(
+    "Here are your books! Choose one or more (separate by a comma) to add to reading list (or enter 'none')"
   );
-  answer *= 1;
-  while (answer - 1 >= choices.length || answer - 1 < 0 || isNaN(answer)) {
-    answer = await readLineAsync(
-      "Please enter a book with the correct index in front of it: "
-    );
-    answer *= 1;
-  }
 
-  return answer - 1;
+  while (true) {
+    let answer = await readLineAsync("Enter book selection: ");
+    if (answer === "none") {
+      return new Set();
+    } else if (!answer.length) {
+      console.log("No response found, please enter a valid reponse");
+    } else {
+      let selection = answer.split(",");
+      let setSelection = new Set(selection);
+      let valid = true;
+      for (let entry of setSelection) {
+        entry *= 1;
+        if (entry - 1 >= choices.length || entry - 1 < 0 || isNaN(entry)) {
+          console.log(
+            "Invalid input, one or more (separate by a comma) books to add to reading list (or enter 'none')"
+          );
+          valid = false;
+          break;
+        }
+      }
+      if (valid) return setSelection;
+    }
+  }
 };
 
 module.exports = {
   getAction,
   getQuery,
-  selectBook,
+  selectBookOrBooks,
 };
