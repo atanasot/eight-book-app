@@ -49,6 +49,6 @@ The app prompts the user to select an action. The user can either search for a b
 ## Technologies
 
 - JavaScript
-- `inquirer` - Used to prompt user for actions or queries
-- `fs` - Used to save and open reading list to disk
+- `readline` - Node built-in module for reading user input
+- `fs` - Node package used to save and open reading list to disk
 - `chai` - Used for testing

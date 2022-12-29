@@ -1,53 +1,70 @@
-const inquirer = require("inquirer");
+const { createInterface } = require("readline");
 
-// This function lets the user select an option
+const readLineAsync = async (msg) => {
+  const readline = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  const response = new Promise((resolve) => {
+    readline.question(msg, (userRes) => {
+      resolve(userRes);
+    });
+  });
+  await response;
+  readline.close();
+  return response;
+};
+
 const getAction = async () => {
-  const answer = await inquirer.prompt([
-    {
-      type: "list",
-      name: "action",
-      message: "What would you like to do?",
-      choices: [
-        { value: "search", name: "Search Google Books" },
-        { value: "view", name: "View saved reading list" },
-      ],
-    },
-  ]);
-  return answer.action;
+  try {
+    console.log(
+      "\nWhat would you like to do?\n1) Search Google Books.\n2) View Reading List.\n3) Quit.\n"
+    );
+    let userRes = "";
+    while (true) {
+      userRes = await readLineAsync("Enter selection: ");
+      if (userRes == 1 || userRes == 2 || userRes == 3) {
+        return userRes;
+      }
+      console.log("Please select from options 1, 2, or 3.");
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 async function getQuery() {
   let answer = "";
   while (!answer.length) {
-    const response = await inquirer.prompt([
-      {
-        type: "input",
-        name: "query",
-        message: "Please enter your Google Book query:",
-      },
-    ]);
-    answer = response.query;
-    if (!answer.length) console.log("Please provide a query");
+    answer = await readLineAsync(
+      '\nYou selected "Search Google Books". Please enter your query: '
+    );
+
+    if (!answer.length) console.log("Please provide a query!");
   }
   return answer;
 }
 
-// format books for selection by inquirer
 const selectBook = async (books) => {
   const choices = books.reduce((acc, book, idx) => {
     acc.push({ value: idx, name: book.print() });
     return acc;
   }, []);
 
-  const answer = await inquirer.prompt([
-    {
-      type: "list",
-      name: "bookSelection",
-      message: "Here are your books! Choose one to add to reading list:",
-      choices,
-    },
-  ]);
-  return answer.bookSelection;
+  choices.map((choice) => console.log(`${choice.value + 1}) ${choice.name}`));
+  let answer = await readLineAsync(
+    "Here are your books! Choose one to add to reading list: "
+  );
+  answer *= 1;
+  while (answer - 1 >= choices.length || answer - 1 < 0 || isNaN(answer)) {
+    answer = await readLineAsync(
+      "Please enter a book with the correct index in front of it: "
+    );
+    answer *= 1;
+  }
+
+  return answer - 1;
 };
 
 module.exports = {
