@@ -4,7 +4,7 @@ const Book = require("../src/Book");
 const { unlinkSync } = require("fs");
 
 describe("ReadingList class", () => {
-  const testBook = new Book(1, "My Book", "Lina R.", "Publishing House");
+  const testBook = new Book(1, "My Book", ["Lina R."], "Publishing House");
 
   describe("constructor", () => {
     it("starts with an empty array", () => {

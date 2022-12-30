@@ -59,26 +59,30 @@ const selectBookOrBooks = async (books) => {
 
   while (true) {
     let answer = await readLineAsync("Enter book selection: ");
-    if (answer === "none") {
-      return new Set();
-    } else if (!answer.length) {
-      console.log("No response found, please enter a valid reponse");
-    } else {
-      let selection = answer.split(",");
-      let setSelection = new Set(selection);
-      let valid = true;
-      for (let entry of setSelection) {
-        entry *= 1;
-        if (entry - 1 >= choices.length || entry - 1 < 0 || isNaN(entry)) {
-          console.log(
-            "Invalid input, one or more (separate by a comma) books to add to reading list (or enter 'none')"
-          );
-          valid = false;
-          break;
-        }
-      }
-      if (valid) return setSelection;
+    try {
+      return validateBookSelection(answer, choices.length);
+    } catch (e) {
+      console.log(e);
     }
+  }
+};
+
+const validateBookSelection = (answer, numChoices) => {
+  if (answer.toLowerCase().trim() === "none") {
+    return new Set();
+  } else if (!answer.length) {
+    throw "No response found, please enter a valid reponse";
+  } else {
+    let selection = answer.split(",");
+    selection = selection.map((element) => element.trim());
+    let setSelection = new Set(selection);
+    for (let entry of setSelection) {
+      entry *= 1;
+      if (entry - 1 >= numChoices || entry - 1 < 0 || isNaN(entry)) {
+        throw "Invalid input, one or more (separate by a comma) books to add to reading list (or enter 'none').";
+      }
+    }
+    return setSelection;
   }
 };
 
@@ -86,4 +90,5 @@ module.exports = {
   getAction,
   getQuery,
   selectBookOrBooks,
+  validateBookSelection,
 };
